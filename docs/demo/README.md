@@ -1,5 +1,7 @@
 # RPA Project Simulator — video walkthrough
 
+**New short:** [Four perspectives. One shared process. (0:25)](SHORT_V070.md), published with app v0.70. It uses earlier synthetic demo captures. The longer walkthrough below remains the v0.63 recording.
+
 **Approved v0.63 walkthrough:** 3:28, with neutral product branding, current app captures and a shared perspective for business analysts, RPA developers, stakeholders and trainers. The repository and Pages URLs are intentionally unchanged. See the [branding decisions](../BRANDING.md#video-decision).
 
 UiPath™ is a trademark of UiPath, Inc. and UiPath SRL. RPA Project Simulator is an independent community tool, not affiliated with, sponsored by, or endorsed by UiPath. No permission or certification is claimed.

@@ -1,6 +1,6 @@
 # RPA Project Simulator — branding and publication checklist
 
-Status: v0.63 app branding and approved 3:28 walkthrough. The author chose to retain the existing repository name and Pages URLs. The historical v0.61 video remains unchanged; the new cut is published separately with revised narration and current app captures.
+Status: v0.70 app release, the approved 25-second horizontal short, and the retained 3:28 v0.63 walkthrough. The author chose to retain the existing repository name and Pages URLs. Earlier videos remain historical recordings; the new short uses recorded synthetic-project footage, the approved revised opening, full-frame app views, and AI-generated narration with persistent disclosure. See [short video details and attribution](demo/SHORT_V070.md).
 
 ## Product and compatibility
 

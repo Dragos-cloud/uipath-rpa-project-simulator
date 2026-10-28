@@ -239,3 +239,18 @@ test('an ellipsis inside a complete source string literal is not mistaken for tr
   assert.equal(parse(g.condition).right.value,'…');
   assert.equal(scenarioSource({name:'status = "…?'}).complete,false);
 });
+
+test('Scenario stays visible and explains unsupported Flowchart routes instead of disappearing',()=>{
+  const controls={selScn:{value:'',innerHTML:''},btnScenarioDetails:{disabled:false},scnWrap:{style:{}},scenarioStatus:{hidden:true,textContent:''}};
+  const S={model:{steps:[],_importReport:{routing:{flowchartDecisions:7}}}};
+  const build=new Function('S','$','T','esc','renderScenarioDetails',
+    between('function parseScenarioCondition(', '/* Scenario details UI.')+
+    between('function buildScenarios(', "$('selScn').addEventListener")+'\nreturn buildScenarios;')(
+      S,id=>controls[id],k=>k,s=>String(s),()=>{});
+  build();
+  assert.equal(controls.scnWrap.style.display,'inline-flex');assert.equal(controls.selScn.disabled,true);
+  assert.equal(controls.scenarioStatus.hidden,false);assert.equal(controls.scenarioStatus.textContent,'scn.flowchartUnavailable');
+  S.model={steps:[]};build();assert.equal(controls.scenarioStatus.textContent,'scn.noRoutes');
+  S.model={steps:fixture()};build();assert.equal(controls.selScn.disabled,false);assert.equal(controls.scenarioStatus.hidden,true);
+  assert.equal(S.scnList.length,5);
+});

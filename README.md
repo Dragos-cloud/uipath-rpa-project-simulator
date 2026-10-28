@@ -2,11 +2,11 @@
 
 An independent, dependency-free browser tool for exploring supported UiPath™ project files and process design documents (PDDs). Import supported workflow structures to build a review model, investigate documentation gaps and ask a local AI assistant about the supplied material. It does not execute UiPath workflows or certify project compatibility.
 
-**v0.63:** the app uses the neutral name RPA Project Simulator. The repository and Pages URLs below are intentionally retained by the author; see the [branding and publication decisions](docs/BRANDING.md). No GitHub rename or remote change has been made.
+**v0.70 update:** click a process card to review **Configuration used by this step**: filtered settings, linked templates and source-cell/code evidence for that workflow or activity. Supported directly forwarded template arguments stay specific to each call. Ambiguous values are not resolved by guesswork. This release also includes document-role review, legacy-XAML compatibility, the shared PDD contract and clearer exception evidence. Step-specific Explain and PDD-draft enrichment are not part of this update. See the [release notes](CHANGELOG.md), [project-context boundary](docs/PROJECT_CONTEXT.md), [PDD contract](docs/PDD_MODEL.md) and [branding decisions](docs/BRANDING.md).
 
 The application is a single static page: no build, server, or account is required.
 
-[**Open the live app**](https://dragos-cloud.github.io/uipath-rpa-project-simulator/) · [Watch the walkthrough](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.63)
+[**Open the live app**](https://dragos-cloud.github.io/uipath-rpa-project-simulator/) · [Latest release and short video](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.70) · [Full walkthrough](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.63)
 
 An independent community tool developed by Dragos Marin. It is not affiliated with, sponsored by, or endorsed by UiPath.
 
@@ -15,6 +15,14 @@ An independent community tool developed by Dragos Marin. It is not affiliated wi
 UiPath™ is a trademark of UiPath, Inc. and UiPath SRL. References identify supported source formats and interoperability only; RPA Project Simulator is not an official UiPath product.
 
 This notice does not claim permission, approval or certification. It is not a substitute for any permission required for a particular use. See [UiPath's Trademark & Copyright Use Policy](https://www.uipath.com/assets/downloads/trademark-copyright-use-policy). The MIT license covers this project's code, not rights to third-party trademarks.
+
+## Watch the short (0:25)
+
+[![Four perspectives. One shared process.](docs/demo/preview-short-v070.jpg)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4)
+
+[Watch or download the horizontal 1080p short](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4) · [Video details and music attribution](docs/demo/SHORT_V070.md)
+
+Four perspectives—business analyst, RPA developer, stakeholder and trainer—share one process view. The short highlights project import, PDD/code evidence and local AI. It uses recorded synthetic-project footage from v0.63, rather than claiming to show every v0.70 feature. The complete captured app viewport stays visible. AI-generated narration and video production are disclosed throughout; local-model answers remain subject to source review.
 
 ## Watch the walkthrough (3:28)
 
@@ -28,12 +36,12 @@ The [historical v0.61 walkthrough](https://github.com/Dragos-cloud/uipath-rpa-pr
 
 ## Who it is for
 
-| Role | Use it to |
-| --- | --- |
+| Role                  | Use it to                                                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Business analyst (BA) | Compare documented requirements with the imported workflows, review gaps, clarify human work, and prepare a PDD draft. |
-| RPA developer | Inspect workflow relationships, activity details, and inferred exception paths with the wider delivery team. |
-| Stakeholder | Understand the process, discuss responsibilities and exceptions, and ask questions in business language. |
-| Trainer | Build a walkthrough from project material, step through the flow, and use explanations and questions in a workshop. |
+| RPA developer         | Inspect workflow relationships, activity details, and inferred exception paths with the wider delivery team.           |
+| Stakeholder           | Understand the process, discuss responsibilities and exceptions, and ask questions in business language.               |
+| Trainer               | Build a walkthrough from project material, step through the flow, and use explanations and questions in a workshop.    |
 
 ## Run it
 
@@ -48,8 +56,8 @@ The public site does not host a shared LLM or run imported UiPath workflows. A `
 ## Start with your project
 
 1. Select **Import project…** and choose the project folder or its workflows and `project.json`.
-2. Add a PDD (`.json` or `.docx`) and BPMN diagram if available. A PDD is optional.
-3. Review any mapping suggestions, build the model, and inspect the steps, sources, and reported gaps.
+2. Include documents (`.json`/`.docx`), `Config.xlsx` or `Settings.xlsx`, and a BPMN diagram if available. A PDD is optional.
+3. Confirm document roles and select one PDD (or none), then review any mapping suggestions and build. Inspect sources, gaps and **Project documents and configuration**.
 4. Walk through the simulation and exception paths. Optionally connect LM Studio for **Brief me**, **Explain**, **Ask**, and imported-project **Plain names**.
 5. Save the session or export the diagram, timeline, reports, and a PDD draft for review.
 
@@ -57,7 +65,8 @@ The invoice and onboarding samples are starter examples for learning the control
 
 ## What it does
 
-- Imports UiPath `.xaml`, `.cs`, `project.json`, PDD (`.json` or `.docx`), and BPMN files in the browser.
+- Imports UiPath `.xaml`, `.cs`, `project.json`, supported PDD (`.json`/`.docx`), operational Word documents, named Config/Settings `.xlsx` workbooks, and BPMN files in the browser.
+- Suggests document roles from supported content and code/config references, with manual correction and explicit PDD selection. Config is context, never requirements or verified runtime state.
 - Simulates happy paths, retries, recovery, terminal failures, human gates, and branching scenarios.
 - Surfaces mappings, documentation differences and limited implementation evidence for human review—not a complete defect audit.
 - Exports process models, diagrams, timelines, gap reports, and generated PDD drafts.
@@ -75,24 +84,47 @@ This repository intentionally ignores imported workflows, PDDs, BPMN files, gene
 - [index.html](index.html) — complete application (HTML, CSS, JavaScript, and generic samples).
 - [PRODUCT_HANDBOOK.md](PRODUCT_HANDBOOK.md) — detailed product and maintenance reference.
 - [CHANGELOG.md](CHANGELOG.md) — public release notes.
+- [docs/PDD_MODEL.md](docs/PDD_MODEL.md) — canonical PDD contract, converter extension points, source evidence and compatibility rules.
 - [docs/BRANDING.md](docs/BRANDING.md) — neutral naming, trademark notices, retained repository URLs and video publication decisions.
 - [docs/demo/README.md](docs/demo/README.md) — video, chapter guide, source-check limitations and a matching LinkedIn post draft. The MP4 and captions are attached to the GitHub release rather than stored in Git history.
 
 ## Quality checks
 
-Run `node --test tests/pdd-parser.test.cjs tests/scenarios.test.cjs tests/guide.test.cjs tests/branding.test.cjs` for dependency-free parser, scenario, guide-navigation and branding regression tests. The GitHub Actions workflow runs these tests and verifies that the embedded JavaScript compiles. Before releasing, also check both sample processes, human gates, exception recovery, session save/load, document exports and the English/Romanian guide tabs in your target browsers. Test project imports with anonymised fixtures only.
+Run `node --test tests/*.test.cjs` for dependency-free parser, exception-evidence, scenario, guide-navigation and branding regression tests. The GitHub Actions workflow runs these tests and verifies that the embedded JavaScript compiles. Before releasing, also check both sample processes, human gates, exception recovery, session save/load, document exports and the English/Romanian guide tabs in your target browsers. Test project imports with anonymised fixtures only.
+
+## Legacy XAML compatibility
+
+Some older Studio exports include spaces in the assembly identity of a `clr-namespace:` declaration, for example `assembly=mscorlib, Version=4.0.0.0`. Browser XML parsers can reject these namespace URIs before reading any workflow activities. The importer percent-encodes only whitespace in that assembly portion of actual XML namespace declarations, in a temporary copy. Namespace prefixes, assembly identity, expressions, selectors, messages, code and source files are preserved.
+
+**Gaps → Import review → Older XAML format accepted** lists affected workflows and adjustment counts; original and adapted namespace values remain in saved-session/import-report data. Remaining malformed XML still fails with a bounded browser diagnostic and line/column information when available. This is import compatibility, not a runtime test, support for every legacy serialization, or new Flowchart scenario support. Re-import source files to apply the fix; loading an old saved model does not recover workflows that previously failed.
 
 ## PDD structure support
 
 Word imports support legacy English/Romanian step-and-exception tables and lane-oriented tables such as `# / BPMN element / Element type / Description`. Columns are resolved by their names rather than fixed positions. Current-state sections and grouped summaries are kept out of the target step list; gateways and events retain their types.
 
+Legacy Romanian headers such as `Descrierea acțiunii`, `Nr. pas la care apare` and `Acțiune de întreprins` are recognized. General information is read as metadata rather than numbered process work; merged group banners do not become steps. **Gaps → Import review** records the selected PDD, parsed sources, errors, route support and missing workflows. **PDD readout → Table diagnostics** shows what each table was classified as, including its column headings. Some non-step tables remain unnormalized and visible for review. Re-import sources after a parser update; saved sessions contain the previously extracted model.
+
 The **PDD readout** in mapping and the gap report shows what was extracted and which tables were not normalised. Exception state transitions are separate from exception definitions. Business rules, human-review requirements, open constraints and source references are retained. Human task requirements are not inserted as assumed executable gates, and missing Throw evidence does not prove that branch/status-based exception handling is absent.
 
 Mapping works with REFramework `Process.xaml` calls and non-REFramework entry-workflow calls. Suggestions still need human confirmation. This is structured extraction, not universal understanding of arbitrary prose, embedded diagrams or every Word template. Existing JSON PDD imports remain supported.
 
+Both PDD readers now produce one validated documentation contract before mapping/model building. Invalid shapes are reported rather than silently converted into empty requirements. The separate PDD contract version does not change saved-session schema 1. In **PDD readout → Document details and sources**, optional author, document revision, template identifier and scope are marked as provided, detected or unknown, with Word table/row or original JSON references when available. Missing metadata does not block import, and a valid structure does not prove complete/correct extraction or code compliance. JSON still takes precedence when multiple PDDs are supplied; no cross-document comparison, merge, AI parsing or new route support is included. See the [maintainer contract](docs/PDD_MODEL.md).
+
+## Exception evidence: raises are not handlers
+
+**Scenario** derives decision-route assumptions. **Inject exception** arms a recognized explicit raise mapped to a model step; built-in samples instead use authored training failures. **Exception evidence** separately lists Catch types, protected Try activities, handler actions, simple literal status assignments, Finally and Rethrow. It is also available in matching inspectors, Gaps, Markdown exports and generated PDD drafts.
+
+An empty injection list does **not** mean error handling is absent. A Catch can respond to an implicit activity failure without a Throw. A general `System.Exception` Catch does not identify a specific business/system failure. The inventory covers all supplied XAML, including tests and workflows not proven reachable. It does not evaluate CLR type inheritance, Catch selection, caller propagation, conditional handler execution or successful recovery. Injecting a raise with an enclosing Catch ends at **Review required**, without inventing a handler outcome.
+
+Inline-code recognition is limited to a literal-message `throw new` / `Throw New` subset; arbitrary code, variable throws, implicit failures and coded workflows are not exhaustively analysed. Older sessions need re-importing to obtain the inventory; saved-session schema remains 1.
+
+The evidence view uses business-language labels by default; **Technical details** retains parser limits, source types and handler activity details. **Explain** sends bounded evidence to the configured LLM endpoint and returns a reviewable business-language interpretation. It respects the configured response language (or the interface language when set to Auto), can be exported as Markdown, and is not proof of runtime success. No request is sent until Explain is chosen; an unconfigured model shows setup guidance. The earlier local PDF manual remains versioned for v0.64.
+
 ## Limitations
 
 Scenario titles identify the activity a route focuses on. **Branch details…** explains supported Boolean assumptions and retains the complete source expression and True/Then or False/Else outcome. These explanations do not need an LLM and do not evaluate runtime data. Unsupported expressions are flagged for technical review; older sessions with truncated expressions need a project re-import to recover the source. AI labels cannot change the selected branch or the source-based explanation.
+
+Selectable scenarios currently support structured If/Else routes, not connected Flowchart graphs. When routes cannot be built, Scenario remains visible but disabled with a reason; this does not establish that the source project has no decisions. Error injection is separate. Import review distinguishes found Flowchart decisions from supported selectable decisions.
 
 Simulation timings are estimates, not production benchmarks. Imported models and PDD mappings need human review; coded workflows and unsupported control-flow constructs may not be fully represented. Imported persistence activities and human waits are not fully modelled: a BOT label or zero human-wait total does not prove a process has no manual work. AI explanations and generated documents are drafts and can contain mistakes, including overstating what unfinished code implements. Check them against the original sources. See the handbook for the detailed limitations.
 

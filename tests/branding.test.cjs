@@ -41,7 +41,9 @@ test('approved video, preserved archive and retained repository URLs are disclos
   assert.match(demo,/preserved unchanged/);
   assert.match(demo,/releases\/download\/v0\.61\/uipath-rpa-project-simulator-demo\.mp4/);
   assert.match(read('docs/BRANDING.md'),/rpa-project-simulator/);
-  assert.match(read('README.md'),/No GitHub rename or remote change has been made/);
+  assert.match(read('README.md'),/https:\/\/dragos-cloud\.github\.io\/uipath-rpa-project-simulator\//);
+  assert.match(read('README.md'),/https:\/\/github\.com\/Dragos-cloud\/uipath-rpa-project-simulator\/releases\/tag\/v0\.70/);
+  assert.match(read('docs/demo/SHORT_V070.md'),/releases\/download\/v0\.70\/rpa-project-simulator-short-v070\.mp4/);
   assert.match(demo,/releases\/download\/v0\.63\/rpa-project-simulator-walkthrough-v063\.mp4/);
   assert.match(read('README.md'),/Watch the walkthrough \(3:28\)/);
   assert.match(read('docs/BRANDING.md'),/retain the existing repository name/);

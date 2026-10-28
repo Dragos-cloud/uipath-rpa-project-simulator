@@ -10,6 +10,8 @@ exports/
 
 # Local video production, private notes, backups and credentials
 /media/
+/output/
+/tmp/
 .env
 .env.*
 !.env.example

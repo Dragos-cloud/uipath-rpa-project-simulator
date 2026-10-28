@@ -9,7 +9,8 @@ const between = (a,b) => {
   assert.ok(start>=0 && end>start, `Source boundaries: ${a}`);
   return page.slice(start,end);
 };
-const parse = new Function(between('function parsePddBlocks(', 'const pddSections =')+'\nreturn parsePddBlocks;')();
+const contract = between('/* --- 10.2a Canonical PDD contract', 'function parsePddJson(');
+const parse = new Function(contract+between('function parsePddBlocks(', 'const pddSections =')+'\nreturn parsePddBlocks;')();
 const context = new Function(between('function pddPromptContext(', 'function pddReadSummary(')+'\nreturn pddPromptContext;')();
 const heading = (text,level=2) => ({kind:'p',heading:level,text,style:'Heading'+level});
 const para = text => ({kind:'p',heading:0,text,style:'Normal'});
@@ -145,6 +146,39 @@ test('normalisation does not modify source blocks',()=>{
   assert.equal(JSON.stringify(b),before);
 });
 
+test('Romanian general information is metadata, not numbered process work',()=>{
+  const p=parse([para('Proiectul:'),heading('1. INTRODUCERE',1),heading('1.4 Informații generale'),
+    table(['Nr.','Descriere','Detalii'],[['1','Denumirea procesului','Synthetic document review'],
+      ['2','Când anume este programat procesul să ruleze','Manual, after approval']])]);
+  assert.equal(p.sections.length,0);assert.equal(p.meta.name,'Synthetic document review');
+  assert.equal(p.ops.trigger,'Manual, after approval');assert.equal(p.diagnostics.tables[0].kind,'metadata');
+});
+
+test('inflected Romanian action headers retain target rows and skip merged banners/repeated headings',()=>{
+  const header=['Nr. pas','Descrierea acțiunii','Detalii'];
+  const p=parse([heading('2. ANALIZA AS-IS',1),heading('2.2 Pașii procesului'),
+    table(header,[['1. Old process group'],['1.1','Old manual step','Legacy']]),
+    heading('3. PROCES TO-BE',1),heading('3.2 Pașii detaliați'),heading('3.2.1 Prepare input',3),
+    table(header,[['1. Prepare input'],['1.1','Check input folder','Preserve the source reference'],header,['1.2','Read source','Inspect values']])]);
+  assert.equal(p.sections.length,1);assert.equal(p.sections[0].ref,'3.2.1');
+  assert.deepEqual(p.sections[0].steps.map(s=>s.desc),['Check input folder','Read source']);
+  assert.equal(p.sections[0].steps[0].source.row,3);
+  assert.equal(p.sections[0].steps[0].detail,'Preserve the source reference');
+  assert.equal(p.diagnostics.tables[0].kind,'current-steps');
+});
+
+test('Romanian exception and intervention aliases preserve actions, references, owners and rights',()=>{
+  const p=parse([heading('3.4 Excepții de business'),
+    table(['Denumirea excepției','Nr. pas la care apare','Parametri','Acțiune de întreprins'],
+      [['Missing input','3.2.1/1.1','No files','Record issue and request review']]),
+    heading('3.3 Puncte de intervenție umană'),
+    table(['Acțiune din proces','Descriere acțiune','Tip intervenție','Rol utilizator','Drepturi necesare?','Limitări'],
+      [['Prepare files','Review before import','Manual','Reviewer','Read-only','No changes']])]);
+  assert.equal(p.exceptions[0].pas,'3.2.1/1.1');assert.equal(p.exceptions[0].action,'Record issue and request review');
+  assert.equal(p.interventions[0].action,'Prepare files');assert.equal(p.interventions[0].role,'Reviewer');
+  assert.equal(p.interventions[0].rights,'Read-only');
+});
+
 test('AI context includes bounded PDD requirements with evidence warning',()=>{
   const p=parse(modern()), text=context(p);
   assert.match(text,/BR-001/);
@@ -177,13 +211,19 @@ test('embedded application JavaScript compiles',()=>{
 });
 
 test('legacy PDD JSON contract stays unchanged',()=>{
-  const parseJson=new Function(between('function parsePddJson(', '/* --- 10.3 PDD as DOCX')+'\nreturn parsePddJson;')();
+  const parseJson=new Function(contract+between('function parsePddJson(', '/* --- 10.3 PDD as DOCX')+'\nreturn parsePddJson;')();
   const p=parseJson({nume_proces:'Legacy JSON',tobe_sections:[{title:'Validate',steps:[{descriere:'Check account',detalii:'Use reference'}]}],
     biz_exceptii:[{denumire:'Missing account',pas:'1',actiune:'Clarify'}]});
   assert.equal(p.meta.name,'Legacy JSON');
   assert.equal(p.sections[0].steps[0].detail,'Use reference');
   assert.equal(p.exceptions[0].cls,'business');
   assert.equal(p.exceptions[0].action,'Clarify');
+});
+
+test('unrelated JSON cannot silently replace a valid Word PDD',()=>{
+  const parseJson=new Function(contract+between('function parsePddJson(', '/* --- 10.3 PDD as DOCX')+'\nreturn parsePddJson;')();
+  for(const input of [{settings:{theme:'dark'}},{meta:{schema:1},steps:[],exceptions:[]},null,[]])
+    assert.throws(()=>parseJson(input),/not a supported PDD export/);
 });
 
 test('PDD details and old sessions survive JSON serialisation without schema change',()=>{
@@ -208,7 +248,7 @@ test('confirmed Main mappings replace the unconfirmed-detail placeholder',()=>{
 
 test('PDD readout escapes imported document text',()=>{
   const escape=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  const summary=new Function('esc',between('function pddReadSummary(', 'function projectMappingSteps(')+'\nreturn pddReadSummary;')(escape);
+  const summary=new Function('esc','T',contract+between('function pddReadSummary(', 'function projectMappingSteps(')+'\nreturn pddReadSummary;')(escape,key=>key);
   const p=parse([para('<img src=x onerror=alert(1)>'),heading('4.2 Work'),table(['Step','Description'],[['1','<script>bad()</script>']])]);
   const html=summary(p);
   assert.ok(!html.includes('<img src='));

@@ -1,6 +1,6 @@
 # RPA Project Simulator — Product Handbook
 
-**Version covered:** 0.63 — the number is the `APP_VERSION` constant, shown next to the app name in the header (as implemented in [`index.html`](index.html)). Bump it on every code change so the running app identifies what it contains; the release notes are in [CHANGELOG.md](CHANGELOG.md).
+**Version covered:** 0.70 — the number is the `APP_VERSION` constant, shown next to the app name in the header (as implemented in [`index.html`](index.html)). Bump it on every code change so the running app identifies what it contains; the release notes are in [CHANGELOG.md](CHANGELOG.md).
 **Format:** a single self-contained HTML file — no build step, no server, no external dependencies. Opens directly in a browser.
 
 ---
@@ -110,6 +110,8 @@ Listed from models the app builds from imported projects; the engine ignores any
 |---|---|
 | `_gaps` | the gap-report list: `{ kind, sev, title, detail, info?, covKind?, covIdx? }`. `info:true` = a note, not a defect (excluded from the toolbar badge). `covKind`/`covIdx` tie a gap to a row of the coverage matrix |
 | `_coverage` | `{ thrown[], documented[] }` — the exception coverage matrix: each row has the text, `best` match, similarity `score` and `band` (likely / possible / none) |
+| `_importReport` | optional v1 report with the import/build app version, parsed source identities, chosen PDD, counts and route-support limits, source errors/warnings and distinct missing workflows; retained by Save session and the gap Markdown export |
+| `errorEvidence` | optional v1 inventory of all supplied XAML: workflow-local recognized raises, Catch types and protected regions, handler activities/literal statuses, Finally and Rethrow; structural source evidence, not runtime execution or verified reachability |
 | `coverageDecisions` | `{ thrown:{ rowIndex:'confirmed'\|'rejected' }, documented:{ … } }` — the person's accept/reject decisions on pairings; written when the first decision is made |
 
 **`meta`**
@@ -139,7 +141,19 @@ Listed from models the app builds from imported projects; the engine ignores any
 | `pddRef`, `pddIdx`, `pddDetail` | the matched PDD section, for the inspector's "According to the PDD" block |
 | `decision`, `decId`, `inline` on a gateway | a decision inferred from an `If` (`decision:true`, `decId` = the decision it stands for; informational flowchart diamonds have `inline:true` and are not simulated) |
 
-**Exceptions** (beyond the fields above): `retryAssumed` — the retry count is the framework's standard one, not read from the code; `firesAfter` — see the JSON above.
+**Exceptions** (beyond the fields above): `retryAssumed` — the retry count is the framework's standard one, not read from the code; `firesAfter` — see the JSON above; `handlingUnverified` — an enclosing Catch is structurally present, so injection ends at **Review required** without inventing handler selection, retry or recovery.
+
+### Exception evidence boundaries (v0.64)
+
+Scenario derives decision-route assumptions. Inject exception uses supported explicit raises mapped to process steps, or manually authored failures in included samples. Exception evidence separately retains code-defined handling, including Catch-only workflows whose activities can fail implicitly. Zero injectable failures does not establish that business/system handling is absent.
+
+Catch type arguments are resolved through declared XML namespaces when possible. `System.Exception` is general, `UiPath.Core.BusinessRuleException` is business-typed, recognised `System.*Exception` names are system-typed, and custom/unresolved names remain unknown. These labels describe source types, not the cause or runtime type of a failure. Enclosing Try regions provide candidates only; CLR inheritance, Catch selection, call-site propagation, conditional handler execution and successful recovery are not evaluated. Handler/Finally-only workflow calls are retained as evidence, not inserted into the ordinary invocation spine. Finally is displayed separately, not treated as an exception.
+
+Recognized inline raises are limited to a literal-message `throw new` / `Throw New` subset; constructor creation alone, supported string/comment forms and variable throws are not treated as injectable raises. This is not a full C#/VB parser or exhaustive failure analysis. The inventory covers all supplied workflows, including unreferenced helpers/tests. Re-import old sessions to obtain it; new sessions preserve the optional inventory without changing schema 1.
+
+The evidence panel, matching card inspectors, gap report/export, generated PDD draft and bounded AI context use the same inventory. A generated PDD is still a review draft; an LLM explanation is not proof that handling executes successfully.
+
+In v0.65 the default evidence view leads with business activity names, work covered by each response and actions written for an error. Technical details retain types, tags, literal variable assignments and parser limits. Explain in the panel uses the configured local-model connection and response language (Auto follows the interface language for this view), provides an explicitly unverified interpretation and a separate Markdown export. Opening the panel does not call AI; missing configuration sends no request. Closing, switching projects or changing language invalidates the displayed answer and any pending reply. The request itself is not aborted at the server, but an obsolete reply cannot populate the new view. Raw source remains accessible without AI.
 
 ### 2.2 The saved-session file (`.rpaproj.json`)
 
@@ -150,7 +164,39 @@ Listed from models the app builds from imported projects; the engine ignores any
 
 **Rule for changing the model:** a change that an older reader would misread (a renamed or re-shaped field) must bump `SCHEMA_VERSION` and add a `MIGRATIONS` step in the same change, with a test. Adding an optional field needs neither.
 
+### 2.3 Import review and parser revision (v0.66)
+
+The local revision fixes legacy Romanian action-header inflections, exception action/reference aliases and General information being mistaken for process work. Merged single-cell group banners and repeated headings are excluded, AS-IS remains separate, and document/process metadata is retained. The manifest name wins when supplied; otherwise a useful workflow class or the PDD name supplies identity, not an arbitrary first file.
+
+Gaps includes Import review with the app version, entry/process files, PDD source, parsed counts, source errors, unsupported route forms and missing dependencies. Table diagnostics include header text. Unrelated JSON without supported PDD fields is skipped with a warning. From v0.69, JSON has default priority only among likely PDD candidates; users confirm document roles and choose the PDD (or none). Multiple sources are not merged.
+
+Scenario remains visible but disabled when no supported structured If/Else routes can be built. Flowchart decisions and back-references are not simulated as selectable paths; no routes are fabricated from lexical XML nesting or from the PDD. An existing saved model is a snapshot, not the original Word/XAML source: re-import after parser corrections. See the dated changelog for observed before/after counts, end-to-end checks and remaining limits. The v0.64 PDF has not been regenerated for this revision.
+
 ---
+
+### 2.4 Canonical PDD foundation (v0.67)
+
+JSON and DOCX readers now emit the same versioned Canonical PDD Model (CPM). Required arrays and typed records are validated before mapping and again at the builder boundary. Invalid shapes, unsupported PDD versions, duplicate IDs and broken exception-state links fail explicitly; empty requirements are not silently substituted for malformed input. A valid structure still does not certify correct or complete extraction.
+
+The function-based converter registry dispatches by extension and accepts injected readers/registries for testing. Word XML/style extraction, ordered-block interpretation and JSON-specific field mapping remain outside the simulator. BPMN is still only a task-name cross-check. No framework, dependencies or build step were added.
+
+Optional metadata includes document revision/date/author, template identifier and expected scope. EN/RO **Document details and sources / Detalii și surse ale documentului** shows values as provided, detected or unknown with original JSON Pointers or Word table/row/block locations. Missing fields stay unknown and do not block import. Template identifiers are retained but do not select new template profiles. Application-name consumers remain compatible through a separate evidence list; operational details also retain evidence.
+
+The PDD contract version, parser version, document revision and saved-session schema are independent. The Process Model schema remains 1. Existing sessions stay snapshots; re-import sources for new extraction/evidence. No automatic metadata editing, cross-document comparison/merge, AI extraction, PDF support or Flowchart scenarios are added. The previously generated PDF manual remains v0.64. See [docs/PDD_MODEL.md](docs/PDD_MODEL.md) for fields, extension points and compatibility rules.
+
+### 2.5 Legacy XAML compatibility (v0.68)
+
+Some older Studio projects serialize qualified assembly identities containing literal spaces in CLR namespace URIs. The browser's XML parser rejects these declarations before the app can read their activities, even though the .NET XML reader accepts them. `normalizeLegacyXamlNamespaces` makes a temporary compatibility copy: it percent-encodes whitespace only after `;assembly=` in actual `xmlns` values starting with `clr-namespace:`. Prefixes, CLR namespace names and assembly identity are retained; no DLL is loaded or workflow executed.
+
+The lexical pass skips comments, CDATA, processing instructions and declarations/DTD subsets, and consumes whole quoted attributes so namespace-looking text in code/selectors/messages is not rewritten. Numeric whitespace references in assembly names are handled as well; already escaped declarations are not double encoded. This does not add DTD/entity support or repair arbitrary malformed XML. Remaining errors include a bounded browser diagnostic; any line/column refers to the parsed compatibility copy when adaptation occurred.
+
+Parsed workflows retain optional `xmlCompatibility` evidence. Import review summarizes affected workflows/counts in English/Romanian and saved sessions/Markdown exports retain original/adapted namespace values. Old reports without this optional data still render. Saved Process Model schema remains 1, CPM schema remains 1, and Flowchart route limitations are unchanged. Re-import original sources after upgrading; a previously saved incomplete model cannot recover omitted source workflows.
+
+### 2.6 Configuration in Step details (v0.70)
+
+Open a process card and look for **Configuration used by this step**. A linked template is shown by filename; approved retry/test-mode values and website origins can be displayed, while other values remain hidden or marked runtime-supplied. Expand **Show where this comes from** for the setting key, workbook cell, original imported-relative paths and code reference. A direct supported argument forwarded by the caller is tied to that call, not every call to the same workflow.
+
+References are limited to the card's workflow, inline activity subtree or decision activity. Child workflows are not automatically included. Duplicate rows remain visible alternatives, unknown keys are only "not found in supplied config," and missing/ambiguous scopes do not get guessed associations. Empty results do not establish that no settings exist. Re-import sources for old sessions; new evidence survives schema-1 save/load. The inspector stays inside the browser area on narrow screens. Explain, Brief/Ask and generated PDD-draft enrichment are unchanged in this phase. See [the exact support and privacy limits](docs/PROJECT_CONTEXT.md).
 
 ## 3. Existing functionality
 
@@ -195,7 +241,9 @@ Modeled outcomes, all demonstrable via the sample processes:
 
 ### 3.3 Project import pipeline (turns a real UiPath project into a model)
 
-Triggered by **Import project…**. The user drops every relevant file at once; nothing is uploaded — all parsing happens with in-browser APIs (`DOMParser`, native `DecompressionStream` for unzipping `.docx`).
+Triggered by **Import project…**. The user drops every relevant file at once; parsing happens locally with in-browser APIs (`DOMParser`, native `DecompressionStream` for `.docx` and supported config `.xlsx` files). Optional AI features send bounded context to the configured model endpoint.
+
+**Document roles and config context (v0.69).** Before mapping, confirm likely PDD / operational document or bot template / needs review. Suggestions combine supported requirements content with supplied code/config references. Choose one PDD or continue with code only; no operational template is silently promoted to requirements. Config/Settings `.xlsx` workbooks contribute sanitized Settings/Constants/Assets entries, source cells, symbolic Config lookups and supported one-hop child document operations. Most values are withheld; sensitive rows are omitted, formulas and external links are not executed, and only imported document links replace raw template paths. Values retained by the allowlist are retry integers, test-mode booleans and credential-free website origins. This context is not requirements, runtime validation or a project-wide secret scrubber. **Gaps → Project documents and configuration**, session saves, Markdown gap exports and general AI project context retain the sanitized snapshot. See [the detailed support/privacy boundary](docs/PROJECT_CONTEXT.md). Existing sessions remain schema 1; re-import to obtain the new evidence.
 
 | File type | What is extracted |
 |---|---|
@@ -340,5 +388,5 @@ Unsupported expressions remain technical and require source review. Conditions a
 - **The model builder is a pipeline of named stages.** `buildProjectModel` (§11) is ~20 lines that call, in a fixed order, `detectProject → addHumanSteps → addFrameworkOpening → addSpineSteps → addInlineProcessSteps → addFrameworkStatus → addEntrySteps → addInlineMainSteps → addFrameworkClose → noteStepSources → markRepeatedCalls → inferGateways → addFlowNotes → collectThrownExceptions → addPddGaps → exceptionCoverage → buildMeta`. Each stage takes one context object `c` and appends to the shared `c.steps / c.exceptions / c.gaps`; the comment above the first stage lists what each does. The **order matters** (step order, gap order and every id depend on it) — add a stage in the right place and run the tests; do not reorder without a reason.
 - **Strict separation of concerns**: parsers (§10) never touch the DOM or global state; they emit plain data fragments. The model builder (§11) is the only place that turns those fragments into the canonical Process Model + gap list. Everything downstream (diagram, timeline, LLM prompts) reads only the Process Model, never the raw parsed sources — this is what makes samples and imported projects behave identically everywhere else in the app.
 - **Saved sessions are versioned.** `SCHEMA_VERSION` + `MIGRATIONS` (near the model-loading code) define the file format; change the shape of the model only together with a migration step and a version bump.
-- **Validation:** GitHub Actions is configured to compile the embedded JavaScript and run 50 dependency-free Node tests in `tests/pdd-parser.test.cjs`, `tests/scenarios.test.cjs`, `tests/guide.test.cjs` and `tests/branding.test.cjs`. These cover PDD normalisation, compatibility, Boolean polarity, source retention, path selection, guide navigation, language parity, neutral branding and notices. They are not a browser end-to-end suite or a UiPath runtime test. Actual imports, generated documents, exports and layout still require browser checks with anonymised data.
+- **Validation:** `node --test tests/*.test.cjs` runs the dependency-free Node suite. GitHub Actions compiles the embedded JavaScript and runs legacy XAML/parser compatibility, canonical PDD/converter contract, full import-pipeline, exception-evidence, scenario, guide-navigation and branding tests. They are not a browser end-to-end suite or a UiPath runtime test. Actual imports, generated documents, exports and layout still require browser checks with anonymised data. See the changelog for the verified test count for each revision.
 - **`localStorage` is optional and guarded** (`store` helper) — the app degrades to in-memory settings if storage is blocked, and LLM API tokens are only persisted if the user explicitly opts in.

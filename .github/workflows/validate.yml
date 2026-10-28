@@ -21,8 +21,20 @@ jobs:
           node -e "const fs=require('fs'); const page=fs.readFileSync('index.html','utf8'); const start=page.indexOf('<script>'); const end=page.indexOf('</script>',start); if(start<0||end<0) throw new Error('Inline script not found'); new Function(page.slice(start+8,end)); console.log('Embedded JavaScript compiles.');"
       - name: Test PDD structure compatibility
         run: node --test tests/pdd-parser.test.cjs
+      - name: Test canonical PDD contract and converter boundary
+        run: node --test tests/pdd-contract.test.cjs
+      - name: Test legacy XAML namespace compatibility
+        run: node --test tests/legacy-xaml.test.cjs
       - name: Test scenario wording and branch polarity
         run: node --test tests/scenarios.test.cjs
+      - name: Test exception evidence and Catch scoping
+        run: node --test tests/error-evidence.test.cjs
+      - name: Test complete import pipeline and diagnostics
+        run: node --test tests/import-review.test.cjs
+      - name: Test document roles, configuration context and privacy boundaries
+        run: node --test tests/project-context.test.cjs
+      - name: Test step-specific configuration evidence and inspector
+        run: node --test tests/step-config.test.cjs
       - name: Test guide navigation and language parity
         run: node --test tests/guide.test.cjs
       - name: Test neutral branding and trademark notices
