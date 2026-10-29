@@ -9,9 +9,17 @@ exports/
 /customer-order-processing/
 
 # Local video production, private notes, backups and credentials
+/APP_LOGIC.md
+/AGENTS.md
 /media/
 /output/
 /tmp/
+/docs/BRANDING.md
+/docs/demo/LINKEDIN_POST.md
+/docs/demo/SHORT_V070.md
+/docs/demo/preview-short-v070.jpg
+/docs/demo/preview-v063.jpg
+/docs/demo/preview.jpg
 .env
 .env.*
 !.env.example

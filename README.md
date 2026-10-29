@@ -2,7 +2,7 @@
 
 An independent, dependency-free browser tool for exploring supported UiPath™ project files and process design documents (PDDs). Import supported workflow structures to build a review model, investigate documentation gaps and ask a local AI assistant about the supplied material. It does not execute UiPath workflows or certify project compatibility.
 
-**v0.70 update:** click a process card to review **Configuration used by this step**: filtered settings, linked templates and source-cell/code evidence for that workflow or activity. Supported directly forwarded template arguments stay specific to each call. Ambiguous values are not resolved by guesswork. This release also includes document-role review, legacy-XAML compatibility, the shared PDD contract and clearer exception evidence. Step-specific Explain and PDD-draft enrichment are not part of this update. See the [release notes](CHANGELOG.md), [project-context boundary](docs/PROJECT_CONTEXT.md), [PDD contract](docs/PDD_MODEL.md) and [branding decisions](docs/BRANDING.md).
+**v0.70 update:** click a process card to review **Configuration used by this step**: filtered settings, linked templates and source-cell/code evidence for that workflow or activity. Supported directly forwarded template arguments stay specific to each call. Ambiguous values are not resolved by guesswork. This release also includes document-role review, legacy-XAML compatibility, the shared PDD contract and clearer exception evidence. Step-specific Explain and PDD-draft enrichment are not part of this update. See the [release notes](CHANGELOG.md), [project-context boundary](docs/PROJECT_CONTEXT.md) and [PDD contract](docs/PDD_MODEL.md).
 
 The application is a single static page: no build, server, or account is required.
 
@@ -18,15 +18,11 @@ This notice does not claim permission, approval or certification. It is not a su
 
 ## Watch the short (0:25)
 
-[![Four perspectives. One shared process.](docs/demo/preview-short-v070.jpg)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4)
-
-[Watch or download the horizontal 1080p short](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4) · [Video details and music attribution](docs/demo/SHORT_V070.md)
+[Watch or download the horizontal 1080p short](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4)
 
 Four perspectives—business analyst, RPA developer, stakeholder and trainer—share one process view. The short highlights project import, PDD/code evidence and local AI. It uses recorded synthetic-project footage from v0.63, rather than claiming to show every v0.70 feature. The complete captured app viewport stays visible. AI-generated narration and video production are disclosed throughout; local-model answers remain subject to source review.
 
 ## Watch the walkthrough (3:28)
-
-[![RPA Project Simulator — one project, four perspectives](docs/demo/preview-v063.jpg)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.63)
 
 [Watch or download the 3:28 video](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.63/rpa-project-simulator-walkthrough-v063.mp4) · [English subtitles](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.63/captions.srt) · [Walkthrough guide](docs/demo/README.md)
 
@@ -85,8 +81,7 @@ This repository intentionally ignores imported workflows, PDDs, BPMN files, gene
 - [PRODUCT_HANDBOOK.md](PRODUCT_HANDBOOK.md) — detailed product and maintenance reference.
 - [CHANGELOG.md](CHANGELOG.md) — public release notes.
 - [docs/PDD_MODEL.md](docs/PDD_MODEL.md) — canonical PDD contract, converter extension points, source evidence and compatibility rules.
-- [docs/BRANDING.md](docs/BRANDING.md) — neutral naming, trademark notices, retained repository URLs and video publication decisions.
-- [docs/demo/README.md](docs/demo/README.md) — video, chapter guide, source-check limitations and a matching LinkedIn post draft. The MP4 and captions are attached to the GitHub release rather than stored in Git history.
+- [docs/demo/README.md](docs/demo/README.md) — video chapter guide and source-check limitations. The MP4 and captions are attached to the GitHub release rather than stored in Git history.
 
 ## Quality checks
 

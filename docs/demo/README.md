@@ -1,16 +1,14 @@
 # RPA Project Simulator — video walkthrough
 
-**New short:** [Four perspectives. One shared process. (0:25)](SHORT_V070.md), published with app v0.70. It uses earlier synthetic demo captures. The longer walkthrough below remains the v0.63 recording.
+**New short:** [Four perspectives. One shared process. (0:25)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.70/rpa-project-simulator-short-v070.mp4), published with app v0.70. It uses earlier synthetic demo captures. The longer walkthrough below remains the v0.63 recording.
 
-**Approved v0.63 walkthrough:** 3:28, with neutral product branding, current app captures and a shared perspective for business analysts, RPA developers, stakeholders and trainers. The repository and Pages URLs are intentionally unchanged. See the [branding decisions](../BRANDING.md#video-decision).
+**Approved v0.63 walkthrough:** 3:28, with neutral product branding, current app captures and a shared perspective for business analysts, RPA developers, stakeholders and trainers. The repository and Pages URLs are intentionally unchanged.
 
 UiPath™ is a trademark of UiPath, Inc. and UiPath SRL. RPA Project Simulator is an independent community tool, not affiliated with, sponsored by, or endorsed by UiPath. No permission or certification is claimed.
 
 [Open the live app](https://dragos-cloud.github.io/uipath-rpa-project-simulator/) · [Source repository](https://github.com/Dragos-cloud/uipath-rpa-project-simulator)
 
 [Watch or download the MP4 (3:28, 1080p)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.63/rpa-project-simulator-walkthrough-v063.mp4) · [English subtitles](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.63/captions.srt) · [Release](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.63)
-
-[![One project, four perspectives](preview-v063.jpg)](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.63)
 
 Bring your own UiPath project into a shared view for business analysts, RPA developers, stakeholders and trainers. The video uses a synthetic Customer Order Processing PDD and intentionally unfinished workflows—not production data. The project is kept incomplete to support a discussion about what still needs work; its source files are not part of this repository.
 
@@ -57,7 +55,5 @@ The MP4 and subtitles live in the GitHub release to avoid putting large binary p
 ## Historical v0.61
 
 The former 2:46 recording is preserved unchanged with its original branding: [MP4](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.61/uipath-rpa-project-simulator-demo.mp4), [subtitles](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/download/v0.61/captions.srt), [release](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/releases/tag/v0.61). It is an archive, not the current promotional cut.
-
-See the [matching LinkedIn post draft](LINKEDIN_POST.md). Publishing this repository or release does not post anything to LinkedIn.
 
 Independent community tool developed by Dragos Marin; not affiliated with, sponsored by, or endorsed by UiPath.

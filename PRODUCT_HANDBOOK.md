@@ -26,7 +26,7 @@ Parsing and simulation execute client-side. When an AI feature is enabled, the a
 - **Stakeholders** reviewing the process, responsibilities, and exceptions in business language.
 - **Trainers / delivery leads** running walkthroughs and workshops from project material.
 
-This is an independent community tool developed by Dragos Marin, not affiliated with, sponsored by, or endorsed by UiPath. UiPath™ is a trademark of UiPath, Inc. and UiPath SRL. Platform names identify supported source formats/interoperability, not the app's publisher. No permission or certification is claimed. The footer and both guide languages carry notices. See the [branding checklist](docs/BRANDING.md) for publication and video-refresh decisions.
+This is an independent community tool developed by Dragos Marin, not affiliated with, sponsored by, or endorsed by UiPath. UiPath™ is a trademark of UiPath, Inc. and UiPath SRL. Platform names identify supported source formats/interoperability, not the app's publisher. No permission or certification is claimed. The footer and both guide languages carry notices.
 
 ### Included example content
 Two hand-authored sample processes ship in the app (`SAMPLES.invoice`, `SAMPLES.onboarding`) for learning the controls before importing your own project:

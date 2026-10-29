@@ -11,7 +11,7 @@ This release brings the local v0.64–v0.70 improvements to the public app:
 - Separate code-defined raises and Catch handling evidence, business-friendly explanations, and optional local-AI Explain on exception evidence.
 - Updated bilingual in-app guide, README, handbook, maintainer documentation and regression checks.
 
-The new **25-second horizontal short** is attached to this release, with full-frame synthetic-project app views, the approved “Four perspectives. One shared process.” opening, ElevenLabs narration and a persistent AI disclosure. Its footage was recorded from v0.63; it is not a complete tour of the new configuration inspector. See [video details, limitations and attribution](https://github.com/Dragos-cloud/uipath-rpa-project-simulator/blob/main/docs/demo/SHORT_V070.md). The earlier 3:28 walkthrough remains on v0.63.
+The new **25-second horizontal short** is attached to this release, with full-frame synthetic-project app views, the approved “Four perspectives. One shared process.” opening, ElevenLabs narration and a persistent AI disclosure. Its footage was recorded from v0.63; it is not a complete tour of the new configuration inspector. The earlier 3:28 walkthrough remains on v0.63.
 
 Validation: all 152 dependency-free tests pass; embedded JavaScript compiles. The short is 1920×1080,30fps,25 seconds with AAC audio, and its decoded frames were checked. Only synthetic fixtures and approved promotional assets are published.
 
